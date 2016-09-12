@@ -29,3 +29,5 @@ To end, just send the kill signal.
 |Version|Change|
 |---|---|
 |v0.1|Initial|
+|v0.2|Initial|
+|v0.3|Add version const, process time to console output.|

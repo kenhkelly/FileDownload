@@ -9,7 +9,10 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
+
+const version string = "v0.3"
 
 var dirPath string
 
@@ -35,12 +38,13 @@ func main() {
 	})
 
 	http.HandleFunc("/get", get)
-	fmt.Println("FileDownload v0.2")
+	fmt.Println("FileDownload " + version)
 	fmt.Println("Listening on :" + port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func get(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	getUrl := r.URL.Query().Get("url")
 
 	if len(getUrl) == 0 {
@@ -85,10 +89,11 @@ func get(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Error writing file: %s", err)
 	}
 
+	end := time.Now()
 	msg := fmt.Sprintf("Wrote %v bytes", size)
 
 	fmt.Fprint(w, msg)
 
-	msg = fmt.Sprintf("%s to %s", msg, filename)
+	msg = fmt.Sprintf("%s to %s in %v", msg, filename, end.Sub(start))
 	fmt.Println(msg)
 }
